@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - geometry - cube</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+	</head>
+	<body>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
+		<script type="module">
+
+			import * as THREE from 'three';
+
+			let camera, scene, renderer;
+			let mesh;
+			let ufos = [];
+			
+			var arr_xzc = [
+				{x:-20,	z:-20,	c :0xFE3105},
+				{x:0,	z:-20,	c :0xFEA005},
+				{x:20,	z:-20,	c :0xF6FE05},
+				
+				{x:-20,	z:0,	c :0x67FE05},
+				{x:0,	z:0,	c :0x05E7FE},
+				{x:20,	z:0,	c :0x0505FE},
+				
+				{x:-20,	z:20,	c :0x9C05FE},
+				{x:0,	z:20,	c :0xA3A3A4},
+				{x:20,	z:20,	c :0xffffff}
+			];
+			
+			
+
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
+				camera.position.z = 100;
+				camera.position.y = 20;
+				console.log("camera.position",camera.position);
+
+				scene = new THREE.Scene();
+
+				const geometry = new THREE.CylinderGeometry( 4, 8, 4, 30 ); 
+				
+				for(var i=0;i<arr_xzc.length;i++){
+					const material = new THREE.MeshBasicMaterial( { color: arr_xzc[i].c, wireframe :true } );
+					mesh = new THREE.Mesh( geometry, material );
+					mesh.position.x = arr_xzc[i].x;
+					mesh.position.z = arr_xzc[i].z;
+					scene.add( mesh );		
+					ufos.push(mesh);			
+				}
+				
+
+				
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+			var cnt  = 0;
+			function animate() {
+
+				requestAnimationFrame( animate );
+				
+				if(cnt>100){
+					ufos[0].rotation.y += 0.1;
+					ufos[0].position.y += 0.1;
+				}
+				if(cnt>200){
+					ufos[1].rotation.y += 0.1;
+					ufos[1].position.y += 0.1;
+				}
+				if(cnt>300){
+					ufos[2].rotation.y += 0.1;
+					ufos[2].position.y += 0.1;
+				}
+				
+				
+				if(cnt>400){
+					ufos[3].rotation.y += 0.1;
+					ufos[3].position.y += 0.1;
+				}
+				if(cnt>500){
+					ufos[4].rotation.y += 0.1;
+					ufos[4].position.y += 0.1;
+				}
+				if(cnt>600){
+					ufos[5].rotation.y += 0.1;
+					ufos[5].position.y += 0.1;
+				}
+		
+		
+				if(cnt>700){
+					ufos[6].rotation.y += 0.1;
+					ufos[6].position.y += 0.1;
+				}
+				if(cnt>800){
+					ufos[7].rotation.y += 0.1;
+					ufos[7].position.y += 0.1;
+				}
+				if(cnt>900){
+					ufos[8].rotation.y += 0.1;
+					ufos[8].position.y += 0.1;
+					camera.lookAt(ufos[7].position);
+				}
+
+				renderer.render( scene, camera );
+				cnt++;
+				
+			}
+
+		</script>
+
+	</body>
+</html>

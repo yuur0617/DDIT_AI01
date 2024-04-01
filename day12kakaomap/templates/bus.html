@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>마커 생성하기</title>
+    
+</head>
+<body>
+<div id="map" style="width:100%;height:600px;"></div>
+<p><em>지도를 클릭해주세요!</em></p> 
+<p id="result"></p>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d2e8b25f6f858f6bd8ece30d666123d0"></script>
+<script>
+var mapContainer = document.getElementById('map'); 
+var mapOption = { 
+        center: new kakao.maps.LatLng(36.325019, 127.408882),
+        level: 3 
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption); //지도 생성
+
+var marker = new kakao.maps.Marker({ //마커 생성
+    position: new kakao.maps.LatLng(36.325019, 127.408882)
+});
+marker.setMap(map); //마커 출력
+
+var marker = new kakao.maps.Marker({
+    position: new kakao.maps.LatLng(36.325019, 127.41)
+});
+marker.setMap(map);
+
+kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+    
+    // 클릭한 위도, 경도 정보를 가져옵니다 
+    var latlng = mouseEvent.latLng;
+    
+    var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+    message += '경도는 ' + latlng.getLng() + ' 입니다';
+    
+    var resultDiv = document.getElementById('result'); 
+    resultDiv.innerHTML = message;
+    
+});
+
+ 
+</script>
+</body>
+</html>

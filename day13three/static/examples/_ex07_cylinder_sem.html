@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - geometry - cube</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+	</head>
+	<body>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
+		<script type="module">
+
+			import * as THREE from 'three';
+
+			let camera, scene, renderer;
+			let cylinder;
+			
+			var arr_xzc = [
+				{x:-20, z:-20, c:0xFF5733},
+				{x:  0, z:-20, c:0xFF9300},
+				{x: 20, z:-20, c:0xffff00},
+			
+				{x:-20, z:  0, c:0x46FF00},
+				{x:  0, z:  0, c:0x004DFF},
+				{x: 20, z:  0, c:0x6800FF},
+			
+				{x:-20, z: 20, c:0xFF00FB},
+				{x:  0, z: 20, c:0xC4C4C4},
+				{x: 20, z: 20, c:0xFFFFFF},
+			
+			];
+			
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 100 );
+				camera.position.z = 80;
+				camera.position.y = 20;
+					
+				scene = new THREE.Scene();
+				
+				for(var i=0; i<arr_xzc.length; i++){
+					let material = new THREE.MeshBasicMaterial( {color: arr_xzc[i].c, wireframe : true } );
+					let geometry = new THREE.CylinderGeometry( 5,10,5,30 ); // 상단 반지름, 하단 반지름, 높이, 옆면의 개수
+					cylinder = new THREE.Mesh( geometry, material );
+					
+					cylinder.position.x = arr_xzc[i].x;				
+					cylinder.position.z = arr_xzc[i].z;
+					scene.add(cylinder);					
+				}
+				
+				//console.log("box.position", mesh.position)
+				
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+
+
+				window.addEventListener( 'resize', onWindowResize );
+				// 전체 윈도우창 크기에 따라 자동으로 크기 조절
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				
+				
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				renderer.render( scene, camera );
+
+			}
+
+		</script>
+
+	</body>
+</html>

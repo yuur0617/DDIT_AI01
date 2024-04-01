@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - geometry - cube</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+	</head>
+	<body>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
+		<script type="module">
+
+			import * as THREE from 'three';
+
+			let camera, scene, renderer;
+			let sun, earth;
+			let R_SE = 20;
+			let t = 0;
+
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 100 );
+				camera.position.z = 40;
+				scene = new THREE.Scene();
+
+				var texture = new THREE.TextureLoader().load( 'textures/planets/sun.jpg' );
+				texture.colorSpace = THREE.SRGBColorSpace;
+
+				var geometry = new THREE.SphereGeometry( 2,40,40 ); 
+				var material = new THREE.MeshBasicMaterial( { map: texture } ); 
+				sun = new THREE.Mesh( geometry, material );
+				scene.add(sun);
+				
+				texture = new THREE.TextureLoader().load( 'textures/planets/earth_atmos_2048.jpg' );
+				geometry = new THREE.SphereGeometry( 1,40,40 ); 
+				material = new THREE.MeshBasicMaterial( { map: texture } ); 
+
+				earth = new THREE.Mesh( geometry, material );
+				scene.add( earth );
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+
+
+				window.addEventListener( 'resize', onWindowResize );
+				// 전체 윈도우창 크기에 따라 자동으로 크기 조절
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				earth.position.set(R_SE, 0, 0);
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				earth.rotation.y += 0.01;
+				
+				earth.position.x = R_SE*Math.cos(t);
+				earth.position.y = R_SE*Math.sin(t);
+				t+=0.01
+				renderer.render( scene, camera );
+
+			}
+
+		</script>
+
+	</body>
+</html>
